@@ -14,18 +14,16 @@ function positionSuccess({coords}) {
       console.error(e)
       alert("Failed to get weather data")
     })
-
-  function positionError() {
-    alert("There was an error getting your location. Please allow us to use your location and refresh the page.")
-  }
 }
-
+function positionError() {
+  alert("There was an error getting your location. Please allow us to use your location and refresh the page.")
+  }
 
 
 function renderWeather({current, daily, hourly}) {
-   renderCurrentWeather(current)
+  // renderCurrentWeather(current)
    renderDailyWeather(daily)
-   renderHourlyWeather(hourly)
+  // renderHourlyWeather(hourly)
   document.body.classList.remove("blurred")
 
 }
@@ -68,8 +66,11 @@ function renderDailyWeather (daily) {
     setValue("temp", day.maxTemp, {parent: element})
     setValue("time", DAY_FORMATTER.format(day.timestamp), {parent: element})
     element.querySelector("[data-icon]").src = getIconUrl(day.iconCode)
-    dailySection.appendChild(element)
+    dailySection.append(element)
   })
+  console.log(daily)
+  console.log(dailySection)
+
  }
 
  //Hourly formatting

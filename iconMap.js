@@ -1,7 +1,5 @@
 export const ICON_MAP = new Map()
 
-ICON_MAP.set(0,"sun")
-ICON_MAP.set(1,"sun")
 addMapping([0,1], "sun")
 addMapping([2], "cloud-sun")
 addMapping([3], "cloud")
