@@ -2,11 +2,25 @@ import "/style.css";
 import { getWeather } from "./weather";
 import { ICON_MAP } from "./iconMap";
 
-getWeather(10, 10, Intl.DateTimeFormat().resolvedOptions().timeZone).then(renderWeather).
-catch(e => {
-  console.error(e)
-  alert("Failed to get weather data")
-})
+navigator.geolocation.getCurrentPosition(positionSuccess, positionError)
+
+function positionSuccess({coords}) {
+  getWeather(
+    coords.latitude, 
+    coords.longitude, 
+    Intl.DateTimeFormat().resolvedOptions().timeZone)
+    .then(renderWeather)
+    .catch(e => {
+      console.error(e)
+      alert("Failed to get weather data")
+    })
+
+  function positionError() {
+    alert("There was an error getting your location. Please allow us to use your location and refresh the page.")
+  }
+}
+
+
 
 function renderWeather({current, daily, hourly}) {
    renderCurrentWeather(current)
@@ -17,7 +31,12 @@ function renderWeather({current, daily, hourly}) {
 }
 
 function setValue(selector, value, {parent = document} = {}) {
-  parent.querySelector(`[data-${selector}]`).textContent = value
+  const element = parent.querySelector(`[data-${selector}]`);
+  if (element) {
+    element.textContent = value;
+  } else {
+    console.warn(`Element with selector [data-${selector}] not found`);
+  }
 }
 
 function getIconUrl(iconCode) {
@@ -38,7 +57,7 @@ const currentIcon = document.querySelector("[data-current-icon]")
  }
 
  //daily formatting
-const DAY_FORMATTER = Intl.DateTimeFormat(undefined, {weekday: "long"}) //format day rather than a specific date
+const DAY_FORMATTER = new Intl.DateTimeFormat(undefined, {weekday: "long"}) //format day rather than a specific date
 const dailySection = document.querySelector("[data-day-section]")
 const dayCardTemplate = document.getElementById("day-card-template")
 
@@ -62,14 +81,14 @@ function renderHourlyWeather(hourly) {
   hourlySection.innerHTML = ""
   hourly.forEach(hour => {
     const element = hourRowTemplate.content.cloneNode(true)
-    setValue("temp", hour.maxTemp, {parent: element})
-    setValue("fl-temp", hour.feelsLike, {parent: element})
-    setValue("wind", hour.windSpeed, {parent: element})
-    setValue("precip", hour.precip, {parent: element})
-    setValue("day", DAY_FORMATTER.format(hour.timestamp), {parent: element})
-    setValue("time", HOUR_FORMATTER.format(hour.timestamp), {parent: element})
+    setValue("temp", hour.Temp, { parent: element})
+    setValue("fl-temp", hour.feelsLike, { parent: element})
+    setValue("wind", hour.windSpeed, { parent: element})
+    setValue("precip", hour.precip, { parent: element})
+    setValue("day", DAY_FORMATTER.format(hour.timestamp), { parent: element})
+    setValue("time", HOUR_FORMATTER.format(hour.timestamp), { parent: element})
     element.querySelector("[data-icon]").src = getIconUrl(hour.iconCode)
-    hourlySection.appendChild(element)
+    hourlySection.append(element)
   })
   
 }
