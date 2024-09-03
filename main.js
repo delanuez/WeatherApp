@@ -21,9 +21,9 @@ function positionError() {
 
 
 function renderWeather({current, daily, hourly}) {
-  // renderCurrentWeather(current)
+   renderCurrentWeather(current)
    renderDailyWeather(daily)
-  // renderHourlyWeather(hourly)
+   renderHourlyWeather(hourly)
   document.body.classList.remove("blurred")
 
 }
@@ -40,6 +40,7 @@ function setValue(selector, value, {parent = document} = {}) {
 function getIconUrl(iconCode) {
   return `icons/${ICON_MAP.get(iconCode)}.svg`
 }
+
 
 const currentIcon = document.querySelector("[data-current-icon]")
 
@@ -68,8 +69,8 @@ function renderDailyWeather (daily) {
     element.querySelector("[data-icon]").src = getIconUrl(day.iconCode)
     dailySection.append(element)
   })
-  console.log(daily)
-  console.log(dailySection)
+  //console.log(daily)
+ // console.log(dailySection)
 
  }
 
@@ -90,6 +91,7 @@ function renderHourlyWeather(hourly) {
     setValue("time", HOUR_FORMATTER.format(hour.timestamp), { parent: element})
     element.querySelector("[data-icon]").src = getIconUrl(hour.iconCode)
     hourlySection.append(element)
+    console.log(hourly)
   })
   
 }
