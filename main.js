@@ -28,15 +28,12 @@ function renderWeather({current, daily, hourly}) {
 
 }
 
-function setValue(selector, value, {parent = document} = {}) {
-  const element = parent.querySelector(`[data-${selector}]`);
-  if (element) {
-    element.textContent = value;
-  } else {
-    console.warn(`Element with selector [data-${selector}] not found`);
-  }
-}
 
+ function setValue(selector, value, { parent = document } = {}) {
+   parent.querySelector(`[data-${selector}]`).textContent = value
+  console.log(selector, value)
+ }
+ 
 function getIconUrl(iconCode) {
   return `icons/${ICON_MAP.get(iconCode)}.svg`
 }
@@ -65,7 +62,7 @@ function renderDailyWeather (daily) {
   daily.forEach(day => {
     const element = dayCardTemplate.content.cloneNode(true)
     setValue("temp", day.maxTemp, {parent: element})
-    setValue("time", DAY_FORMATTER.format(day.timestamp), {parent: element})
+    setValue("date", DAY_FORMATTER.format(day.timestamp), {parent: element})
     element.querySelector("[data-icon]").src = getIconUrl(day.iconCode)
     dailySection.append(element)
   })
@@ -92,6 +89,7 @@ function renderHourlyWeather(hourly) {
     element.querySelector("[data-icon]").src = getIconUrl(hour.iconCode)
     hourlySection.append(element)
     console.log(hourly)
+    console.log(hourlySection)
   })
   
 }
